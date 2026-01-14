@@ -9,11 +9,11 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     '@nuxt/image',
     '@nuxt/ui',
-    // '@nuxt/fonts',
+    '@nuxt/fonts',
   ],
 
   ui: {
-    fonts: false
+    // fonts: false
   },
 
   colorMode: {

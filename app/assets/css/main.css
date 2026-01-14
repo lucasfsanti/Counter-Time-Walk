@@ -3,6 +3,7 @@
 
 @theme static {
   --font-sans: 'Bergen Sans';
+  --font-timer: 'clockicons';
 
   --color-dark-purple: #1E172D;
   --color-magic-purple: #422872;

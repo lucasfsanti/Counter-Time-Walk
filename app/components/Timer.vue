@@ -93,7 +93,7 @@ export default {
   }
 
   .timer-display {
-    font-family: 'Digital Dismay';
+    font-family: 'clockicons';
     font-size: 15vw;
     color: var(--ui-text);
     line-height: initial;
