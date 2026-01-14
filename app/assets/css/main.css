@@ -67,7 +67,7 @@
 
 @font-face {
   font-family: 'Digital Dismay';
-  src: url('https://lucasfsanti.github.io/Counter-Time-Walk/Digital%20Dismay.otf') format('otf'),
+  src: url('/Counter-Time-Walk/Digital%20Dismay.otf') format('otf'),
        url('/Digital%20Dismay.otf') format('otf');
   font-display: swap;
   font-weight: normal;
