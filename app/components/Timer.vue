@@ -3,7 +3,7 @@
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" v-if="interval === null" />
-        <UButton @click="stopTimer()" icon="ic:round-pause" size="xl" v-if="interval != null" />
+        <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" v-if="interval != null" />
         <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" />
         <UButton @click="deleteTimer()" icon="ic:round-delete" />
       </div>
@@ -47,7 +47,7 @@ export default {
         let sec = parseInt(value % 60, 10);
         this.seconds = sec < 10 ? "0" + sec : sec;
 
-        if (value === 0) {
+        if (value <= 0) {
           this.stopTimer();
         }
       },
