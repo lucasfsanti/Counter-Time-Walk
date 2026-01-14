@@ -46,6 +46,10 @@ export default {
         this.minutes = min < 10 ? "0" + min : min;
         let sec = parseInt(value % 60, 10);
         this.seconds = sec < 10 ? "0" + sec : sec;
+
+        if (value === 0) {
+          this.stopTimer();
+        }
       },
       immediate: true
     }
