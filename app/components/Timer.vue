@@ -88,14 +88,6 @@ export default {
 </script>
 
 <style>
-  @font-face {
-    font-family: 'Digital Dismay';
-    src: url('https://lucasfsanti.github.io/Counter-Time-Walk/Digital%20Dismay.otf') format('otf');
-    font-display: swap;
-    font-weight: normal;
-    font-style: normal;
-  }
-
   .timer-display {
     font-family: 'Digital Dismay';
     font-size: 15vw;

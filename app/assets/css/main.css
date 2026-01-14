@@ -65,10 +65,20 @@
   --ui-border-inverted: var(--color-yellow-energy);
 }
 
-  @font-face {
-    font-family: 'Digital Dismay';
-    src: url('https://lucasfsanti.github.io/Counter-Time-Walk/Digital%20Dismay.otf') format('otf');
-    font-display: swap;
-    font-weight: normal;
-    font-style: normal;
-  }
+@font-face {
+  font-family: 'Digital Dismay';
+  src: url('https://lucasfsanti.github.io/Counter-Time-Walk/Digital%20Dismay.otf') format('otf'),
+       url('/Digital%20Dismay.otf') format('otf');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bergen Sans';
+  src: url('/Counter-Time-Walk/bergen-sans.otf') format('otf'),
+       url('/Digital%bergen-sans.otf') format('otf');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
