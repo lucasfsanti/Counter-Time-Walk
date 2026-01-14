@@ -2,8 +2,8 @@
     <UCard variant="outline">
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
-        <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" v-if="interval === null" />
-        <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" v-if="interval != null" />
+        <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" />
+        <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" :disabled="interval === null" />
         <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" />
         <UButton @click="deleteTimer()" icon="ic:round-delete" />
       </div>
