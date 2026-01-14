@@ -77,7 +77,7 @@
 @font-face {
   font-family: 'Bergen Sans';
   src: url('/Counter-Time-Walk/bergen-sans.otf') format('otf'),
-       url('/Digital%bergen-sans.otf') format('otf');
+       url('/bergen-sans.otf') format('otf');
   font-display: swap;
   font-weight: normal;
   font-style: normal;
