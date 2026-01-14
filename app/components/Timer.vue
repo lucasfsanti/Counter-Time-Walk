@@ -36,9 +36,9 @@ export default {
     }
   },
 
-  beforeCreate() {
-    this.interval = interval;
-  },
+  // beforeCreate() {
+  //   this.interval = interval;
+  // },
 
   props: {
     timerId: Number
@@ -58,17 +58,19 @@ export default {
 
   methods: {
     startTimer() {
-      if (interval === null) {
-        interval = setInterval(() => {
+      if (this.interval === null) {
+        this.interval = setInterval(() => {
           this.currentTime--;
         }, 1000);
       }
+
+      debugger
     },
 
     stopTimer() {
-      if (interval) {
-        clearInterval(interval);
-        interval = null
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = null
       }
     },
 
@@ -87,10 +89,10 @@ export default {
 
 <style>
   .timer-display {
-    font-family: 'Digital-7 Mono';
+    font-family: 'Digital Dismay';
     font-size: 15vw;
     color: var(--ui-text);
     line-height: initial;
-    height: 15vw;
+    /* height: 15vw; */
   }
 </style>

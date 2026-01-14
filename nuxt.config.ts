@@ -29,7 +29,7 @@ export default defineNuxtConfig({
         lang: 'pt-br',
       },
       link: [
-        { rel: 'icon', type: 'image/png', href: '/Counter-Time-Walk/favicon.ico' },
+        { rel: 'icon', type: 'image/png', href: (import.meta.env.NUXT_APP_BASE_URL ? import.meta.env.NUXT_APP_BASE_URL : '/') + 'favicon.png' },
       ],
     },
   },

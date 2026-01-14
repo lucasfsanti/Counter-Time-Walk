@@ -38,7 +38,7 @@ useHead({
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
   link: [
-    { rel: 'icon', href: '/Counter-Time-Walk/favicon.ico' }
+    { rel: 'icon', href: (import.meta.env.NUXT_APP_BASE_URL ? import.meta.env.NUXT_APP_BASE_URL : '/') + 'favicon.png' }
   ],
   htmlAttrs: {
     lang: 'pt-br'
