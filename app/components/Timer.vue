@@ -1,7 +1,6 @@
 <template>
     <UCard variant="outline">
-      <!-- <span v-if="this && this.timerId">{{ timerId }}</span> -->
-      <h1 class="timer-display font-timer">{{minutes}}:{{seconds}}</h1>
+      <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" v-if="interval === null" />
         <UButton @click="stopTimer()" icon="ic:round-pause" size="xl" v-if="interval != null" />
@@ -35,10 +34,6 @@ export default {
       interval: null,
     }
   },
-
-  // beforeCreate() {
-  //   this.interval = interval;
-  // },
 
   props: {
     timerId: Number
@@ -88,6 +83,15 @@ export default {
 </script>
 
 <style>
+  @font-face {
+    font-family: 'Digital Dismay';
+    src: url('/Counter-Time-Walk/Digital%20Dismay.otf') format('otf'),
+        url('/Digital%20Dismay.otf') format('otf');
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+  }
+
   .timer-display {
     font-family: 'Digital Dismay';
     font-size: 15vw;
