@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     // '@nuxt/fonts',
   ],
 
+  ui: {
+    fonts: false
+  },
+
   colorMode: {
     preference: 'dark',
   },
