@@ -1,5 +1,5 @@
 <template>
-    <UCard variant="outline">
+    <UCard variant="outline" :style="paletteStyle">
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" />
@@ -8,14 +8,14 @@
         <UButton @click="deleteTimer()" icon="ic:round-delete" />
       </div>
       <div class="flex gap-2 mt-4 flex-wrap justify-center">
-        <UButton @click="currentTime += 30" label="30 s" icon="ic:round-add" color="secondary" class="text-yellow-energy" />
-        <UButton @click="currentTime += 60" label="1 min" icon="ic:round-add" color="secondary" class="text-yellow-energy" />
-        <UButton @click="currentTime += 5 * 60" label="5 min" icon="ic:round-add" color="secondary" class="text-yellow-energy" />
+        <UButton @click="currentTime += 30" label="30 s" icon="ic:round-add" color="secondary" :style="accentStyle" />
+        <UButton @click="currentTime += 60" label="1 min" icon="ic:round-add" color="secondary" :style="accentStyle" />
+        <UButton @click="currentTime += 5 * 60" label="5 min" icon="ic:round-add" color="secondary" :style="accentStyle" />
       </div>
       <div class="flex gap-2 mt-2 flex-wrap justify-center">
-        <UButton @click="currentTime -= 30" label="30s" icon="ic:round-minus" color="secondary" class="text-yellow-energy" />
-        <UButton @click="currentTime -= 60" label="1 min" icon="ic:round-minus" color="secondary" class="text-yellow-energy" />
-        <UButton @click="currentTime -= 5 * 60" label="5 min" icon="ic:round-minus" color="secondary" class="text-yellow-energy" />
+        <UButton @click="currentTime -= 30" label="30s" icon="ic:round-minus" color="secondary" :style="accentStyle" />
+        <UButton @click="currentTime -= 60" label="1 min" icon="ic:round-minus" color="secondary" :style="accentStyle" />
+        <UButton @click="currentTime -= 5 * 60" label="5 min" icon="ic:round-minus" color="secondary" :style="accentStyle" />
       </div>
     </UCard>
 </template>
@@ -36,7 +36,26 @@ export default {
   },
 
   props: {
-    timerId: Number
+    timerId: Number,
+    palette: {
+      type: Object,
+      default: () => getColorPalette(0)
+    }
+  },
+
+  computed: {
+    paletteStyle() {
+      return {
+        '--ui-border': this.palette.border,
+        '--ui-text': this.palette.text
+      };
+    },
+
+    accentStyle() {
+      return {
+        color: this.palette.accent
+      };
+    }
   },
 
   watch: {
