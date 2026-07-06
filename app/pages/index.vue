@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-wrap justify-center gap-10 py-10">
-      <Timer v-for="timer in timers" :timer-id="timer.timerId" :key="timer.timerId"/>
+      <Timer v-for="timer in timers" :timer-id="timer.timerId" :palette="timer.palette" :key="timer.timerId"/>
   </div>
 </template>
 
@@ -10,7 +10,8 @@ export default {
   data() {
     return {
       timers: [{
-        timerId: 0
+        timerId: 0,
+        palette: getColorPalette(0)
       }]
     }
   },
@@ -31,7 +32,8 @@ export default {
     onAddTimer() {
       ultimoId++;
       this.timers.push({
-        timerId: ultimoId
+        timerId: ultimoId,
+        palette: getColorPalette(ultimoId)
       });
     },
 
