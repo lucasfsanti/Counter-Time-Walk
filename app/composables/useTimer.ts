@@ -3,7 +3,6 @@ import { ref, computed, watch } from 'vue'
 const DEFAULT_DURATION = 50 * 60
 
 export function useTimer() {
-  const timerCount = ref(DEFAULT_DURATION)
   const currentTime = ref(DEFAULT_DURATION)
   const interval = ref<ReturnType<typeof setInterval> | null>(null)
 
@@ -37,7 +36,7 @@ export function useTimer() {
   }
 
   function resetTimer() {
-    currentTime.value = timerCount.value
+    currentTime.value = DEFAULT_DURATION
   }
 
   return { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer }
