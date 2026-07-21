@@ -4,46 +4,10 @@
   </div>
 </template>
 
-<script>
-let ultimoId = 0;
-export default {
-  data() {
-    return {
-      timers: [{
-        timerId: 0,
-        palette: getColorPalette(0)
-      }]
-    }
-  },
+<script setup lang="ts">
+const { timers, addTimer, removeTimer } = useTimerList()
 
-  created() {
-    const nuxtApp = useNuxtApp();
-
-    nuxtApp.hook('app:timer:add', () => {
-      this.onAddTimer();
-    });
-
-    nuxtApp.hook('app:timer:delete', (timerId) => {
-      this.onDeleteTimer(timerId);
-    })
-  },
-
-  methods: {
-    onAddTimer() {
-      ultimoId++;
-      this.timers.push({
-        timerId: ultimoId,
-        palette: getColorPalette(ultimoId)
-      });
-    },
-
-    onDeleteTimer(timerId) {
-      const indexToRemove = this.timers.findIndex(t => t.timerId === timerId);
-
-      if (indexToRemove !== -1) {
-        this.timers.splice(indexToRemove, 1);
-      }
-    }
-  }
-}
+const nuxtApp = useNuxtApp()
+nuxtApp.hook('app:timer:add', () => addTimer())
+nuxtApp.hook('app:timer:delete', (timerId: number) => removeTimer(timerId))
 </script>
