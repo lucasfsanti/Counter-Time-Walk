@@ -20,88 +20,28 @@
     </UCard>
 </template>
 
-<script>
-const defaultTimer = 50 * 60;
-let interval = null;
+<script setup lang="ts">
+const props = withDefaults(defineProps<{
+  timerId: number
+  palette?: { border: string; text: string; accent: string }
+}>(), {
+  palette: () => getColorPalette(0)
+})
 
-export default {
-  data() {
-    return {
-      timerCount: defaultTimer,
-      currentTime: defaultTimer,
-      minutes: 50,
-      seconds: 0,
-      interval: null,
-    }
-  },
+const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer()
 
-  props: {
-    timerId: Number,
-    palette: {
-      type: Object,
-      default: () => getColorPalette(0)
-    }
-  },
+const paletteStyle = computed(() => ({
+  '--ui-border': props.palette.border,
+  '--ui-text': props.palette.text,
+}))
 
-  computed: {
-    paletteStyle() {
-      return {
-        '--ui-border': this.palette.border,
-        '--ui-text': this.palette.text
-      };
-    },
+const accentStyle = computed(() => ({
+  color: props.palette.accent,
+}))
 
-    accentStyle() {
-      return {
-        color: this.palette.accent
-      };
-    }
-  },
-
-  watch: {
-    currentTime: {
-      handler(value) {
-        let min = parseInt(value / 60, 10);
-        this.minutes = min < 10 ? "0" + min : min;
-        let sec = parseInt(value % 60, 10);
-        this.seconds = sec < 10 ? "0" + sec : sec;
-
-        if (value <= 0) {
-          this.stopTimer();
-        }
-      },
-      immediate: true
-    }
-  },
-
-  methods: {
-    startTimer() {
-      if (this.interval === null) {
-        this.interval = setInterval(() => {
-          this.currentTime--;
-        }, 1000);
-      }
-
-      debugger
-    },
-
-    stopTimer() {
-      if (this.interval) {
-        clearInterval(this.interval);
-        this.interval = null
-      }
-    },
-
-    resetTimer() {
-      this.currentTime = this.timerCount;
-    },
-
-    deleteTimer() {
-      const nuxtApp = useNuxtApp()
-
-      nuxtApp.callHook('app:timer:delete', this.timerId);
-    }
-  }
+function deleteTimer() {
+  const nuxtApp = useNuxtApp()
+  nuxtApp.callHook('app:timer:delete', props.timerId)
 }
 </script>
 
