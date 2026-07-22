@@ -21,11 +21,15 @@
 
         <UTooltip arrow :text="isMuted ? 'Ativar sons' : 'Mutar sons'">
           <UButton
-            :icon="isMuted ? 'ic:round-volume-off' : 'ic:round-volume-up'"
             variant="solid"
             :aria-label="isMuted ? 'Ativar sons' : 'Mutar sons'"
             @click="toggleMute()"
-          />
+          >
+            <template #leading="{ ui }">
+              <UIcon name="ic:round-volume-up" :class="ui.leadingIcon({ class: [isMuted && 'hidden'] })" />
+              <UIcon name="ic:round-volume-off" :class="ui.leadingIcon({ class: [!isMuted && 'hidden'] })" />
+            </template>
+          </UButton>
         </UTooltip>
 
         <UModal title="Atalhos de teclado">

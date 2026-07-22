@@ -11,7 +11,16 @@ export const nuxtUiStubs = {
   USeparator: { template: '<hr />' },
   UColorModeButton: { template: '<button aria-label="Color mode" />' },
   UTooltip: { template: '<div><slot /></div>' },
-  UButton: { props: ['label'], template: '<button><slot />{{ label }}</button>' },
+  UButton: {
+    props: ['label'],
+    data() {
+      return {
+        ui: { leadingIcon: ({ class: c }: { class?: unknown } = {}) => (Array.isArray(c) ? c.filter(Boolean).join(' ') : c || '') },
+      }
+    },
+    template: '<button><slot name="leading" :ui="ui" /><slot />{{ label }}</button>',
+  },
+  UIcon: { props: ['name'], template: '<i :data-icon="name" />' },
   UCard: { template: '<div><slot /></div>' },
   UModal: {
     props: ['title'],
