@@ -32,24 +32,6 @@ describe('Timer.vue', () => {
     wrappers.forEach(w => w.unmount())
   })
 
-  it('shows its 1-based position in the timers list as a badge', () => {
-    list.addTimer()
-    const first = mountTimer(0)
-    const second = mountTimer(1)
-    expect(first.find('.timer-number').text()).toBe('1')
-    expect(second.find('.timer-number').text()).toBe('2')
-  })
-
-  it('updates its badge after an earlier timer is removed', async () => {
-    list.addTimer()
-    const second = mountTimer(1)
-    expect(second.find('.timer-number').text()).toBe('2')
-
-    list.removeTimer(0)
-    await second.vm.$nextTick()
-    expect(second.find('.timer-number').text()).toBe('1')
-  })
-
   it('is highlighted as active when it is the selected timer', () => {
     const wrapper = mountTimer(0)
     expect(wrapper.classes()).toContain('timer-card--active')
