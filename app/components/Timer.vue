@@ -60,7 +60,7 @@ function deleteTimer() {
     font-size: 15vw;
     color: var(--ui-text);
     line-height: initial;
-    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+    text-shadow: 0 0 16px color-mix(in srgb, currentColor 50%, transparent), 0 0 32px color-mix(in srgb, currentColor 20%, transparent);
     /* height: 15vw; */
   }
 </style>
