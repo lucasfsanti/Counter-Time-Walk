@@ -54,6 +54,11 @@ function makeMockPipWindow() {
   }
 }
 
+function setVisibility(state: 'hidden' | 'visible') {
+  Object.defineProperty(document, 'visibilityState', { value: state, configurable: true })
+  document.dispatchEvent(new Event('visibilitychange'))
+}
+
 describe('usePiP', () => {
   let scope: ReturnType<typeof effectScope>
   let pip: ReturnType<typeof usePiP>
@@ -69,6 +74,7 @@ describe('usePiP', () => {
       writable: true,
       configurable: true,
     })
+    Object.defineProperty(document, 'visibilityState', { value: 'visible', configurable: true })
 
     vi.spyOn(document, 'querySelectorAll').mockReturnValue([] as any)
 
@@ -188,5 +194,49 @@ describe('usePiP', () => {
     await nextTick()
 
     expect(mockPipWindow.resizeTo).not.toHaveBeenCalled()
+  })
+
+  it('opens PiP automatically when the document becomes hidden', async () => {
+    setVisibility('hidden')
+    await vi.waitFor(() => expect(pip.isOpen.value).toBe(true))
+    expect((window as any).documentPictureInPicture.requestWindow).toHaveBeenCalled()
+  })
+
+  it('does not open a second PiP window when one is already open and the document becomes hidden', async () => {
+    await pip.openPiP()
+    ;(window as any).documentPictureInPicture.requestWindow.mockClear()
+
+    setVisibility('hidden')
+    await nextTick()
+
+    expect((window as any).documentPictureInPicture.requestWindow).not.toHaveBeenCalled()
+  })
+
+  it('does not auto-open PiP when the document becomes hidden and the browser does not support it', async () => {
+    delete (window as any).documentPictureInPicture
+
+    setVisibility('hidden')
+    await nextTick()
+
+    expect(pip.isOpen.value).toBe(false)
+  })
+
+  it('closes an automatically-opened PiP window when the document becomes visible again', async () => {
+    setVisibility('hidden')
+    await vi.waitFor(() => expect(pip.isOpen.value).toBe(true))
+
+    setVisibility('visible')
+
+    expect(mockPipWindow.close).toHaveBeenCalled()
+    expect(pip.isOpen.value).toBe(false)
+  })
+
+  it('leaves a manually-opened PiP window open when the document becomes visible', async () => {
+    await pip.openPiP()
+
+    setVisibility('visible')
+
+    expect(mockPipWindow.close).not.toHaveBeenCalled()
+    expect(pip.isOpen.value).toBe(true)
   })
 })
