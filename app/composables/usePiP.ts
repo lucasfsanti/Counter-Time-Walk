@@ -1,8 +1,10 @@
-import { shallowRef, computed, createApp, ref, onMounted, getCurrentInstance } from 'vue'
+import { shallowRef, computed, createApp, ref, onMounted, getCurrentInstance, nextTick, watch } from 'vue'
 import PiPView from '../components/PiPView.vue'
+import { useTimerList } from './useTimerList'
 
 const pipWindow = shallowRef<Window | null>(null)
 const isOpen = computed(() => pipWindow.value !== null)
+let stopWatchingTimerCount: (() => void) | null = null
 
 export function usePiP() {
   const isSupported = ref(false)
@@ -28,8 +30,23 @@ export function usePiP() {
     createApp(PiPView).mount(div)
 
     pipWindow.value = pip
+
+    async function fitToContent() {
+      await nextTick()
+      if (pip.document.fonts) await pip.document.fonts.ready
+      const width = Math.ceil(div.scrollWidth)
+      const height = Math.ceil(div.scrollHeight)
+      if (width > 0 && height > 0) pip.resizeTo(width, height)
+    }
+
+    const { timers } = useTimerList()
+    stopWatchingTimerCount = watch(() => timers.value.length, fitToContent)
+    await fitToContent()
+
     pip.addEventListener('pagehide', () => {
       pipWindow.value = null
+      stopWatchingTimerCount?.()
+      stopWatchingTimerCount = null
     })
   }
 
@@ -38,6 +55,8 @@ export function usePiP() {
       pipWindow.value.close()
       pipWindow.value = null
     }
+    stopWatchingTimerCount?.()
+    stopWatchingTimerCount = null
   }
 
   return { isOpen, isSupported, openPiP, closePiP }
