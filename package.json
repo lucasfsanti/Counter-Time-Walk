@@ -24,7 +24,9 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@vue/test-utils": "^2.4.11",
     "happy-dom": "^20.11.0",
+    "unplugin-auto-import": "^21.0.0",
     "vitest": "^4.1.10"
   }
 }
