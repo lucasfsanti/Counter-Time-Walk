@@ -96,13 +96,15 @@ describe('app.vue', () => {
 
   it('has a header button that mutes/unmutes site sounds and swaps its icon', async () => {
     expect(sound.isMuted.value).toBe(false)
-    expect(wrapper.find('button[icon="ic:round-volume-up"]').exists()).toBe(true)
+    expect(wrapper.find('[data-icon="ic:round-volume-up"]').classes()).not.toContain('hidden')
+    expect(wrapper.find('[data-icon="ic:round-volume-off"]').classes()).toContain('hidden')
 
     await wrapper.find('[aria-label="Mutar sons"]').trigger('click')
     expect(sound.isMuted.value).toBe(true)
 
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('button[icon="ic:round-volume-off"]').exists()).toBe(true)
+    expect(wrapper.find('[data-icon="ic:round-volume-up"]').classes()).toContain('hidden')
+    expect(wrapper.find('[data-icon="ic:round-volume-off"]').classes()).not.toContain('hidden')
 
     await wrapper.find('[aria-label="Ativar sons"]').trigger('click')
     expect(sound.isMuted.value).toBe(false)
