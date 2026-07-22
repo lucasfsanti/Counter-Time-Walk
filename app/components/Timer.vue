@@ -1,5 +1,11 @@
 <template>
-    <UCard variant="outline" :style="paletteStyle">
+    <UCard
+      variant="outline"
+      :style="paletteStyle"
+      :class="['relative', { 'timer-card--active': isActive }]"
+      @mouseenter="setActiveTimer(props.timerId)"
+    >
+      <span v-if="displayNumber" class="timer-number" :style="accentStyle">{{ displayNumber }}</span>
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" aria-label="Start timer" />
@@ -32,9 +38,16 @@ const props = withDefaults(defineProps<{
 
 const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
+const { removeTimer, getDisplayNumber } = useTimerList()
+const displayNumber = computed(() => getDisplayNumber(props.timerId))
+
+const { activeTimerId, setActiveTimer } = useTimerSelection()
+const isActive = computed(() => activeTimerId.value === props.timerId)
+
 const paletteStyle = computed(() => ({
   '--ui-border': props.palette.border,
   '--ui-text': props.palette.text,
+  '--ui-glow': props.palette.accent,
 }))
 
 const accentStyle = computed(() => ({
@@ -42,7 +55,6 @@ const accentStyle = computed(() => ({
 }))
 
 function deleteTimer() {
-  const { removeTimer } = useTimerList()
   removeTimer(props.timerId)
 }
 </script>
@@ -64,5 +76,25 @@ function deleteTimer() {
     line-height: initial;
     text-shadow: 0 0 16px color-mix(in srgb, currentColor 50%, transparent), 0 0 32px color-mix(in srgb, currentColor 20%, transparent);
     /* height: 15vw; */
+  }
+
+  .timer-card--active {
+    box-shadow: 0 0 0 3px var(--ui-glow), 0 0 24px color-mix(in srgb, var(--ui-glow) 60%, transparent);
+    transition: box-shadow 0.15s ease-out;
+  }
+
+  .timer-number {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
   }
 </style>

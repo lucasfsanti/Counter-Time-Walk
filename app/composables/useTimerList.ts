@@ -43,7 +43,11 @@ export function useTimerList() {
     }
   }
 
-  return { timers, addTimer, removeTimer }
+  function getDisplayNumber(timerId: number) {
+    return timers.value.findIndex(t => t.timerId === timerId) + 1
+  }
+
+  return { timers, addTimer, removeTimer, getDisplayNumber }
 }
 
 export function _resetForTesting() {

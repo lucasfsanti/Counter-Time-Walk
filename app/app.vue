@@ -19,6 +19,46 @@
           />
         </UTooltip>
 
+        <UModal title="Atalhos de teclado">
+          <UTooltip arrow text="Atalhos de teclado">
+            <UButton icon="ic:round-keyboard" variant="solid" aria-label="Atalhos de teclado" />
+          </UTooltip>
+
+          <template #body>
+            <dl class="text-sm space-y-2">
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>espaço</kbd></dt>
+                <dd class="text-neutral-400">iniciar/pausar timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>r</kbd></dt>
+                <dd class="text-neutral-400">reiniciar timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>↑</kbd> / <kbd>↓</kbd></dt>
+                <dd class="text-neutral-400">+30s / -30s no timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
+                <dd class="text-neutral-400">selecionar timer anterior/próximo</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>1</kbd>-<kbd>9</kbd></dt>
+                <dd class="text-neutral-400">selecionar o timer com esse número</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>n</kbd></dt>
+                <dd class="text-neutral-400">adicionar timer</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>p</kbd></dt>
+                <dd class="text-neutral-400">abrir/fechar picture-in-picture</dd>
+              </div>
+            </dl>
+            <p class="text-xs text-neutral-500 mt-4">Passe o mouse sobre um timer, ou use as setas/números, para selecioná-lo.</p>
+          </template>
+        </UModal>
+
         <UColorModeButton color="primary" variant="solid" />
       </template>
     </UHeader>
@@ -59,4 +99,6 @@ const currentYear = new Date().getFullYear()
 const { addTimer } = useTimerList()
 
 const { isOpen, isSupported, openPiP, closePiP } = usePiP()
+
+useKeyboardShortcuts()
 </script>
