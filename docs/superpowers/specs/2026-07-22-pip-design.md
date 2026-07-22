@@ -53,8 +53,8 @@ const isOpen = computed(() => pipWindow.value !== null)
 **`openPiP()`:**
 1. Calls `window.documentPictureInPicture.requestWindow({ width: 480, height: 320 })`
 2. Copies all `<link rel="stylesheet">` and `<style>` elements from the main document into `pip.document.head` (transfers clockicons font + Nuxt UI CSS variables)
-3. Copies `document.documentElement.className` to `pip.document.documentElement` (preserves dark mode)
-4. Creates a mount div, calls `createApp(PiPView).mount(div)`
+3. Copies `document.documentElement.className` to `pip.document.documentElement` (preserves dark mode at open time — intentionally not live-synced; toggling dark mode after opening PiP requires closing and reopening)
+4. Creates a mount div, calls `createApp(PiPView).mount(div)` — `PiPView` and `createApp` are explicit imports; Nuxt auto-imports resolve at build time so `useTimerList` in `PiPView.vue` works correctly inside the plain Vue app
 5. Listens to `pip.addEventListener('pagehide', ...)` to clear `pipWindow` when the user closes the float natively
 
 **`closePiP()`:** calls `pipWindow.value.close()` and nulls the ref.
