@@ -1,42 +1,51 @@
-import { ref, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
+import { useTimerList } from './useTimerList'
 
 const DEFAULT_DURATION = 50 * 60
 
-export function useTimer() {
-  const currentTime = ref(DEFAULT_DURATION)
-  const interval = ref<ReturnType<typeof setInterval> | null>(null)
+export function useTimer(timerId: number) {
+  const { timers } = useTimerList()
+
+  const entry = computed(() => timers.value.find(t => t.timerId === timerId)!)
+
+  const currentTime = computed({
+    get: () => entry.value.currentTime,
+    set: (v: number) => { entry.value.currentTime = v },
+  })
 
   const minutes = computed(() => {
-    const min = Math.floor(currentTime.value / 60)
+    const min = Math.floor(entry.value.currentTime / 60)
     return min < 10 ? `0${min}` : `${min}`
   })
 
   const seconds = computed(() => {
-    const sec = currentTime.value % 60
+    const sec = entry.value.currentTime % 60
     return sec < 10 ? `0${sec}` : `${sec}`
   })
 
-  watch(currentTime, (value) => {
+  const interval = computed(() => entry.value.interval)
+
+  watch(() => entry.value.currentTime, (value) => {
     if (value <= 0) stopTimer()
   }, { immediate: true, flush: 'sync' })
 
   function startTimer() {
-    if (interval.value === null) {
-      interval.value = setInterval(() => {
-        currentTime.value--
+    if (entry.value.interval === null) {
+      entry.value.interval = setInterval(() => {
+        entry.value.currentTime--
       }, 1000)
     }
   }
 
   function stopTimer() {
-    if (interval.value !== null) {
-      clearInterval(interval.value)
-      interval.value = null
+    if (entry.value.interval !== null) {
+      clearInterval(entry.value.interval)
+      entry.value.interval = null
     }
   }
 
   function resetTimer() {
-    currentTime.value = DEFAULT_DURATION
+    entry.value.currentTime = DEFAULT_DURATION
   }
 
   return { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer }
