@@ -36,22 +36,36 @@ function makeMockPipWindow() {
   const head = { appendChild: vi.fn() }
   const createdDiv = { scrollWidth: 600, scrollHeight: 400 }
   const body = { appendChild: vi.fn() }
-  return {
+  const mock: any = {
     document: {
       head,
       body,
       documentElement,
       createElement: vi.fn(() => createdDiv),
+      querySelector: vi.fn(() => createdDiv),
       fonts: { ready: Promise.resolve() },
     },
     addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
     close: vi.fn(),
-    resizeTo: vi.fn(),
+    // No window chrome in these mocks, so outer/inner dimensions match —
+    // resizeTo() should be called with exactly the measured content size.
+    outerWidth: 0,
+    outerHeight: 0,
+    innerWidth: 0,
+    innerHeight: 0,
     _head: head,
     _body: body,
     _documentElement: documentElement,
     _createdDiv: createdDiv,
   }
+  mock.resizeTo = vi.fn((width: number, height: number) => {
+    mock.outerWidth = width
+    mock.innerWidth = width
+    mock.outerHeight = height
+    mock.innerHeight = height
+  })
+  return mock
 }
 
 function setVisibility(state: 'hidden' | 'visible') {
