@@ -28,4 +28,9 @@ const { timers } = useTimerList()
   .pip-content .timer-display {
     font-size: 4rem;
   }
+
+  .pip-content .timer-name-label,
+  .pip-content .timer-name-input {
+    font-size: 1.5rem;
+  }
 </style>
