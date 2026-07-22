@@ -2,7 +2,7 @@
     <UCard
       variant="outline"
       :style="paletteStyle"
-      :class="['relative', { 'timer-card--active': isActive }]"
+      :class="['relative', { 'timer-card--active': isActive, 'timer-card--alarming': isAlarming }]"
       @mouseenter="setActiveTimer(props.timerId)"
     >
       <span v-if="displayNumber" class="timer-number" :style="accentStyle">{{ displayNumber }}</span>
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<{
   showDelete: true,
 })
 
-const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
+const { currentTime, minutes, seconds, interval, isAlarming, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
 const { removeTimer, getDisplayNumber } = useTimerList()
 const displayNumber = computed(() => getDisplayNumber(props.timerId))
@@ -81,6 +81,41 @@ function deleteTimer() {
   .timer-card--active {
     box-shadow: 0 0 0 3px var(--ui-glow), 0 0 24px color-mix(in srgb, var(--ui-glow) 60%, transparent);
     transition: box-shadow 0.15s ease-out;
+  }
+
+  .timer-card--alarming {
+    animation: timer-alarm-pulse 1s ease-in-out infinite;
+  }
+
+  .timer-card--alarming .timer-display {
+    animation: timer-alarm-flash 1s ease-in-out infinite;
+  }
+
+  @keyframes timer-alarm-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 3px var(--ui-error), 0 0 24px color-mix(in srgb, var(--ui-error) 60%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 0 6px var(--ui-error), 0 0 48px color-mix(in srgb, var(--ui-error) 80%, transparent);
+    }
+  }
+
+  @keyframes timer-alarm-flash {
+    0%, 100% {
+      color: var(--ui-text);
+    }
+    50% {
+      color: var(--ui-error);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timer-card--alarming,
+    .timer-card--alarming .timer-display {
+      animation: none;
+      box-shadow: 0 0 0 3px var(--ui-error), 0 0 24px color-mix(in srgb, var(--ui-error) 60%, transparent);
+      color: var(--ui-error);
+    }
   }
 
   .timer-number {
