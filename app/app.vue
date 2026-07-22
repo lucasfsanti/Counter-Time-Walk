@@ -3,12 +3,20 @@
     <UHeader>
       <template #left>
         <img src="~/assets/img/Counter_Just_Logo.png" alt="Counter Logo" class="h-15 w-auto"/>
-        <!-- <img src="~/assets/img/Counter_Submarca.png" alt="Counter Logo" class="h-15 w-auto"/> -->
       </template>
       <h1 class="w-auto shrink-0 text-xl">Time Walk</h1>
       <template #right>
         <UTooltip arrow text="Adicionar timer">
           <UButton icon="ic:round-add" variant="solid" @click="addTimer()" />
+        </UTooltip>
+
+        <UTooltip arrow :text="isSupported ? (isOpen ? 'Fechar picture-in-picture' : 'Picture-in-picture') : 'Requer Chrome ou Edge 116+'">
+          <UButton
+            icon="material-symbols:picture-in-picture-2"
+            variant="solid"
+            :disabled="!isSupported"
+            @click="isOpen ? closePiP() : openPiP()"
+          />
         </UTooltip>
 
         <UColorModeButton color="primary" variant="solid" />
@@ -42,16 +50,13 @@ useHead({
   ],
   htmlAttrs: {
     lang: 'pt-br'
-  }
-});
+  },
+})
 
-const config = useRuntimeConfig();
-const currentYear = new Date().getFullYear();
+const config = useRuntimeConfig()
+const currentYear = new Date().getFullYear()
 
+const { addTimer } = useTimerList()
 
-function addTimer() {
-  const nuxtApp = useNuxtApp()
-
-  nuxtApp.callHook('app:timer:add');
-}
+const { isOpen, isSupported, openPiP, closePiP } = usePiP()
 </script>

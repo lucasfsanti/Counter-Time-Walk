@@ -5,9 +5,5 @@
 </template>
 
 <script setup lang="ts">
-const { timers, addTimer, removeTimer } = useTimerList()
-
-const nuxtApp = useNuxtApp()
-nuxtApp.hook('app:timer:add', () => addTimer())
-nuxtApp.hook('app:timer:delete', (timerId: number) => removeTimer(timerId))
+const { timers } = useTimerList()
 </script>

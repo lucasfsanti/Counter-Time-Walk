@@ -1,16 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { effectScope } from 'vue'
 import { useTimer } from '../../app/composables/useTimer'
+import { _resetForTesting } from '../../app/composables/useTimerList'
 
 describe('useTimer', () => {
   let scope: ReturnType<typeof effectScope>
   let timer: ReturnType<typeof useTimer>
 
   beforeEach(() => {
+    _resetForTesting()
     vi.useFakeTimers()
     scope = effectScope()
     scope.run(() => {
-      timer = useTimer()
+      timer = useTimer(0)
     })
   })
 

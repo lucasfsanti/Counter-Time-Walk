@@ -5,7 +5,7 @@
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" aria-label="Start timer" />
         <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" :disabled="interval === null" aria-label="Pause timer" />
         <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" aria-label="Reset timer" />
-        <UButton @click="deleteTimer()" icon="ic:round-delete" aria-label="Delete timer" />
+        <UButton v-if="showDelete" @click="deleteTimer()" icon="ic:round-delete" aria-label="Delete timer" />
       </div>
       <div class="flex gap-2 mt-4 flex-wrap justify-center">
         <UButton @click="currentTime += 30" label="30 s" icon="ic:round-add" color="secondary" :style="accentStyle" />
@@ -24,11 +24,13 @@
 const props = withDefaults(defineProps<{
   timerId: number
   palette?: { border: string; text: string; accent: string }
+  showDelete?: boolean
 }>(), {
-  palette: () => getColorPalette(0)
+  palette: () => getColorPalette(0),
+  showDelete: true,
 })
 
-const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer()
+const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
 const paletteStyle = computed(() => ({
   '--ui-border': props.palette.border,
@@ -40,8 +42,8 @@ const accentStyle = computed(() => ({
 }))
 
 function deleteTimer() {
-  const nuxtApp = useNuxtApp()
-  nuxtApp.callHook('app:timer:delete', props.timerId)
+  const { removeTimer } = useTimerList()
+  removeTimer(props.timerId)
 }
 </script>
 
