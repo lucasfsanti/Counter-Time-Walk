@@ -83,7 +83,7 @@ describe('usePiP', () => {
   })
 
   it('isSupported is true when documentPictureInPicture exists on window', () => {
-    expect(pip.isSupported).toBe(true)
+    expect(pip.isSupported.value).toBe(true)
   })
 
   it('openPiP calls requestWindow with width 480 and height 320', async () => {

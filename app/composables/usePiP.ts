@@ -5,7 +5,7 @@ const pipWindow = shallowRef<Window | null>(null)
 const isOpen = computed(() => pipWindow.value !== null)
 
 export function usePiP() {
-  const isSupported = typeof window !== 'undefined' && 'documentPictureInPicture' in window
+  const isSupported = computed(() => typeof window !== 'undefined' && 'documentPictureInPicture' in window)
 
   async function openPiP() {
     const pip = await (window as any).documentPictureInPicture.requestWindow({
