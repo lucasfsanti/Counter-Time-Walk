@@ -38,8 +38,8 @@ const props = withDefaults(defineProps<{
 
 const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
-const { timers, removeTimer } = useTimerList()
-const displayNumber = computed(() => timers.value.findIndex(t => t.timerId === props.timerId) + 1)
+const { removeTimer, getDisplayNumber } = useTimerList()
+const displayNumber = computed(() => getDisplayNumber(props.timerId))
 
 const { activeTimerId, setActiveTimer } = useTimerSelection()
 const isActive = computed(() => activeTimerId.value === props.timerId)
