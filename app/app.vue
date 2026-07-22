@@ -19,24 +19,41 @@
           />
         </UTooltip>
 
-        <UPopover arrow>
+        <UModal title="Atalhos de teclado">
           <UTooltip arrow text="Atalhos de teclado">
             <UButton icon="ic:round-keyboard" variant="solid" aria-label="Atalhos de teclado" />
           </UTooltip>
 
-          <template #content>
-            <div class="p-4 text-sm space-y-1 min-w-64">
-              <p class="font-semibold mb-2">Atalhos de teclado</p>
-              <p><kbd>espaço</kbd> — iniciar/pausar timer selecionado</p>
-              <p><kbd>r</kbd> — reiniciar timer selecionado</p>
-              <p><kbd>↑</kbd> / <kbd>↓</kbd> — +30s / -30s no timer selecionado</p>
-              <p><kbd>←</kbd> / <kbd>→</kbd> — selecionar timer anterior/próximo</p>
-              <p><kbd>n</kbd> — adicionar timer</p>
-              <p><kbd>p</kbd> — abrir/fechar picture-in-picture</p>
-              <p class="text-neutral-400 mt-2">Passe o mouse sobre um timer para selecioná-lo.</p>
-            </div>
+          <template #body>
+            <dl class="text-sm space-y-2">
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>espaço</kbd></dt>
+                <dd class="text-neutral-400">iniciar/pausar timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>r</kbd></dt>
+                <dd class="text-neutral-400">reiniciar timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>↑</kbd> / <kbd>↓</kbd></dt>
+                <dd class="text-neutral-400">+30s / -30s no timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>←</kbd> / <kbd>→</kbd></dt>
+                <dd class="text-neutral-400">selecionar timer anterior/próximo</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>n</kbd></dt>
+                <dd class="text-neutral-400">adicionar timer</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>p</kbd></dt>
+                <dd class="text-neutral-400">abrir/fechar picture-in-picture</dd>
+              </div>
+            </dl>
+            <p class="text-xs text-neutral-500 mt-4">Passe o mouse sobre um timer para selecioná-lo.</p>
           </template>
-        </UPopover>
+        </UModal>
 
         <UColorModeButton color="primary" variant="solid" />
       </template>
