@@ -2,10 +2,10 @@
     <UCard variant="outline" :style="paletteStyle">
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
-        <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" />
-        <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" :disabled="interval === null" />
-        <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" />
-        <UButton @click="deleteTimer()" icon="ic:round-delete" />
+        <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" aria-label="Start timer" />
+        <UButton @click="stopTimer()" icon="material-symbols:pause-rounded" size="xl" :disabled="interval === null" aria-label="Pause timer" />
+        <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" aria-label="Reset timer" />
+        <UButton @click="deleteTimer()" icon="ic:round-delete" aria-label="Delete timer" />
       </div>
       <div class="flex gap-2 mt-4 flex-wrap justify-center">
         <UButton @click="currentTime += 30" label="30 s" icon="ic:round-add" color="secondary" :style="accentStyle" />
@@ -60,6 +60,7 @@ function deleteTimer() {
     font-size: 15vw;
     color: var(--ui-text);
     line-height: initial;
+    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
     /* height: 15vw; */
   }
 </style>
