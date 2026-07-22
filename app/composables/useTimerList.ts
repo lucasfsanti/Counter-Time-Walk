@@ -35,7 +35,12 @@ export function useTimerList() {
 
   function removeTimer(timerId: number) {
     const index = timers.value.findIndex(t => t.timerId === timerId)
-    if (index !== -1) timers.value.splice(index, 1)
+    if (index !== -1) {
+      if (timers.value[index].interval !== null) {
+        clearInterval(timers.value[index].interval)
+      }
+      timers.value.splice(index, 1)
+    }
   }
 
   return { timers, addTimer, removeTimer }

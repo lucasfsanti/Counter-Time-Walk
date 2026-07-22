@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { useTimerList, _resetForTesting } from '../../app/composables/useTimerList'
 import { colorPalettes } from '../../app/utils/colorPalettes.js'
 
@@ -52,5 +52,22 @@ describe('useTimerList', () => {
     const b = useTimerList()
     a.addTimer()
     expect(b.timers.value).toHaveLength(2)
+  })
+
+  it('removeTimer clears the interval before splicing a running timer', () => {
+    vi.useFakeTimers()
+    const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
+
+    // Simulate a running timer by assigning a non-null interval handle
+    list.timers.value[0].interval = setInterval(() => {}, 1000)
+    const handle = list.timers.value[0].interval
+
+    list.removeTimer(0)
+
+    expect(list.timers.value).toHaveLength(0)
+    expect(clearIntervalSpy).toHaveBeenCalledWith(handle)
+
+    clearIntervalSpy.mockRestore()
+    vi.useRealTimers()
   })
 })

@@ -25,8 +25,8 @@ export function useTimer(timerId: number) {
 
   const interval = computed(() => entry.value.interval)
 
-  watch(() => entry.value.currentTime, (value) => {
-    if (value <= 0) stopTimer()
+  watch(() => entry.value?.currentTime, (value) => {
+    if (value !== undefined && value <= 0) stopTimer()
   }, { immediate: true, flush: 'sync' })
 
   function startTimer() {
