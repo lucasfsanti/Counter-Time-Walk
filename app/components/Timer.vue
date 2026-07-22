@@ -1,5 +1,10 @@
 <template>
-    <UCard variant="outline" :style="paletteStyle">
+    <UCard
+      variant="outline"
+      :style="paletteStyle"
+      :class="{ 'timer-card--active': isActive }"
+      @mouseenter="setActiveTimer(props.timerId)"
+    >
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" aria-label="Start timer" />
@@ -32,9 +37,13 @@ const props = withDefaults(defineProps<{
 
 const { currentTime, minutes, seconds, interval, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
+const { activeTimerId, setActiveTimer } = useTimerSelection()
+const isActive = computed(() => activeTimerId.value === props.timerId)
+
 const paletteStyle = computed(() => ({
   '--ui-border': props.palette.border,
   '--ui-text': props.palette.text,
+  '--ui-glow': props.palette.accent,
 }))
 
 const accentStyle = computed(() => ({
@@ -64,5 +73,10 @@ function deleteTimer() {
     line-height: initial;
     text-shadow: 0 0 16px color-mix(in srgb, currentColor 50%, transparent), 0 0 32px color-mix(in srgb, currentColor 20%, transparent);
     /* height: 15vw; */
+  }
+
+  .timer-card--active {
+    box-shadow: 0 0 0 3px var(--ui-glow), 0 0 24px color-mix(in srgb, var(--ui-glow) 60%, transparent);
+    transition: box-shadow 0.15s ease-out;
   }
 </style>

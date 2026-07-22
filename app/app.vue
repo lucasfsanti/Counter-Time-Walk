@@ -19,6 +19,25 @@
           />
         </UTooltip>
 
+        <UPopover arrow>
+          <UTooltip arrow text="Atalhos de teclado">
+            <UButton icon="ic:round-keyboard" variant="solid" aria-label="Atalhos de teclado" />
+          </UTooltip>
+
+          <template #content>
+            <div class="p-4 text-sm space-y-1 min-w-64">
+              <p class="font-semibold mb-2">Atalhos de teclado</p>
+              <p><kbd>espaço</kbd> — iniciar/pausar timer selecionado</p>
+              <p><kbd>r</kbd> — reiniciar timer selecionado</p>
+              <p><kbd>↑</kbd> / <kbd>↓</kbd> — +30s / -30s no timer selecionado</p>
+              <p><kbd>←</kbd> / <kbd>→</kbd> — selecionar timer anterior/próximo</p>
+              <p><kbd>n</kbd> — adicionar timer</p>
+              <p><kbd>p</kbd> — abrir/fechar picture-in-picture</p>
+              <p class="text-neutral-400 mt-2">Passe o mouse sobre um timer para selecioná-lo.</p>
+            </div>
+          </template>
+        </UPopover>
+
         <UColorModeButton color="primary" variant="solid" />
       </template>
     </UHeader>
@@ -59,4 +78,6 @@ const currentYear = new Date().getFullYear()
 const { addTimer } = useTimerList()
 
 const { isOpen, isSupported, openPiP, closePiP } = usePiP()
+
+useKeyboardShortcuts()
 </script>
