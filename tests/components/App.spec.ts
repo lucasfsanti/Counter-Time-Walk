@@ -22,6 +22,7 @@ vi.mock('../../app/composables/useKeyboardShortcuts', () => shortcutsMock)
 
 import App from '../../app/app.vue'
 import { usePiP } from '../../app/composables/usePiP'
+import { useSound, _resetSoundForTesting } from '../../app/composables/useSound'
 import { useTimerList, _resetForTesting } from '../../app/composables/useTimerList'
 import { nuxtUiStubs } from '../support/nuxtUiStubs'
 
@@ -29,9 +30,11 @@ describe('app.vue', () => {
   let wrapper: VueWrapper
   let list: ReturnType<typeof useTimerList>
   let pip: ReturnType<typeof usePiP>
+  let sound: ReturnType<typeof useSound>
 
   beforeEach(() => {
     _resetForTesting()
+    _resetSoundForTesting()
     shortcutsMock.useKeyboardShortcuts.mockClear()
 
     pip = usePiP()
@@ -40,6 +43,7 @@ describe('app.vue', () => {
     vi.mocked(pip.openPiP).mockClear()
     vi.mocked(pip.closePiP).mockClear()
 
+    sound = useSound()
     list = useTimerList()
     wrapper = mount(App, { global: { stubs: nuxtUiStubs } })
   })
@@ -70,6 +74,7 @@ describe('app.vue', () => {
     expect(modalBody.text()).toContain('selecionar o timer com esse número')
     expect(modalBody.text()).toContain('adicionar timer')
     expect(modalBody.text()).toContain('abrir/fechar picture-in-picture')
+    expect(modalBody.text()).toContain('mutar/ativar sons')
   })
 
   it('disables the PiP button when the browser does not support it', async () => {
@@ -87,5 +92,19 @@ describe('app.vue', () => {
     pip.isOpen.value = true
     await pipButton.trigger('click')
     expect(pip.closePiP).toHaveBeenCalled()
+  })
+
+  it('has a header button that mutes/unmutes site sounds and swaps its icon', async () => {
+    expect(sound.isMuted.value).toBe(false)
+    expect(wrapper.find('button[icon="ic:round-volume-up"]').exists()).toBe(true)
+
+    await wrapper.find('[aria-label="Mutar sons"]').trigger('click')
+    expect(sound.isMuted.value).toBe(true)
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('button[icon="ic:round-volume-off"]').exists()).toBe(true)
+
+    await wrapper.find('[aria-label="Ativar sons"]').trigger('click')
+    expect(sound.isMuted.value).toBe(false)
   })
 })

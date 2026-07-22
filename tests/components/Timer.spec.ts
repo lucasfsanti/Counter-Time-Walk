@@ -62,6 +62,15 @@ describe('Timer.vue', () => {
     expect(wrapper.classes()).not.toContain('timer-card--active')
   })
 
+  it('shows a visual alarm state once the timer has flagged an active alarm', async () => {
+    const wrapper = mountTimer(0)
+    expect(wrapper.classes()).not.toContain('timer-card--alarming')
+
+    list.timers.value[0].isAlarming = true
+    await wrapper.vm.$nextTick()
+    expect(wrapper.classes()).toContain('timer-card--alarming')
+  })
+
   it('mouseenter selects this timer as active', async () => {
     list.addTimer()
     selection.setActiveTimer(1)

@@ -13,6 +13,16 @@ vi.mock('../../app/composables/usePiP', () => ({
   usePiP: () => pipMock,
 }))
 
+const soundMock = vi.hoisted(() => ({
+  isMuted: { value: false },
+  toggleMute: vi.fn(),
+  playAlarm: vi.fn(),
+}))
+
+vi.mock('../../app/composables/useSound', () => ({
+  useSound: () => soundMock,
+}))
+
 import { useKeyboardShortcuts } from '../../app/composables/useKeyboardShortcuts'
 import { useTimerList, _resetForTesting } from '../../app/composables/useTimerList'
 import { useTimerSelection, _resetTimerSelectionForTesting } from '../../app/composables/useTimerSelection'
@@ -35,6 +45,7 @@ describe('useKeyboardShortcuts', () => {
     pipMock.isOpen.value = false
     pipMock.openPiP.mockClear()
     pipMock.closePiP.mockClear()
+    soundMock.toggleMute.mockClear()
 
     scope = effectScope()
     scope.run(() => {
@@ -118,6 +129,11 @@ describe('useKeyboardShortcuts', () => {
     pipMock.isSupported.value = false
     handleKeydown(keydown('KeyP'))
     expect(pipMock.openPiP).not.toHaveBeenCalled()
+  })
+
+  it('KeyM toggles the site mute state', () => {
+    handleKeydown(keydown('KeyM'))
+    expect(soundMock.toggleMute).toHaveBeenCalledTimes(1)
   })
 
   it('ignores shortcuts when a modifier key is held', () => {

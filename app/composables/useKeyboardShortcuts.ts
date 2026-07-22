@@ -3,6 +3,7 @@ import { useTimerList } from './useTimerList'
 import { useTimerSelection } from './useTimerSelection'
 import { useTimer } from './useTimer'
 import { usePiP } from './usePiP'
+import { useSound } from './useSound'
 
 const TIME_STEP = 30
 
@@ -12,6 +13,7 @@ export function useKeyboardShortcuts() {
   const { addTimer, timers } = useTimerList()
   const { activeTimerId, setActiveTimer, selectNext, selectPrevious } = useTimerSelection()
   const { isSupported, isOpen, openPiP, closePiP } = usePiP()
+  const { toggleMute } = useSound()
 
   function handleKeydown(event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey || event.altKey) return
@@ -68,6 +70,9 @@ export function useKeyboardShortcuts() {
           if (isOpen.value) closePiP()
           else openPiP()
         }
+        break
+      case 'KeyM':
+        toggleMute()
         break
     }
   }

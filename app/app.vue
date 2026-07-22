@@ -19,6 +19,15 @@
           />
         </UTooltip>
 
+        <UTooltip arrow :text="isMuted ? 'Ativar sons' : 'Mutar sons'">
+          <UButton
+            :icon="isMuted ? 'ic:round-volume-off' : 'ic:round-volume-up'"
+            variant="solid"
+            :aria-label="isMuted ? 'Ativar sons' : 'Mutar sons'"
+            @click="toggleMute()"
+          />
+        </UTooltip>
+
         <UModal title="Atalhos de teclado">
           <UTooltip arrow text="Atalhos de teclado">
             <UButton icon="ic:round-keyboard" variant="solid" aria-label="Atalhos de teclado" />
@@ -53,6 +62,10 @@
               <div class="flex items-center justify-between gap-4">
                 <dt><kbd>p</kbd></dt>
                 <dd class="text-neutral-400">abrir/fechar picture-in-picture</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
+                <dt><kbd>m</kbd></dt>
+                <dd class="text-neutral-400">mutar/ativar sons</dd>
               </div>
             </dl>
             <p class="text-xs text-neutral-500 mt-4">Passe o mouse sobre um timer, ou use as setas/números, para selecioná-lo.</p>
@@ -99,6 +112,7 @@ const currentYear = new Date().getFullYear()
 const { addTimer } = useTimerList()
 
 const { isOpen, isSupported, openPiP, closePiP } = usePiP()
+const { isMuted, toggleMute } = useSound()
 
 useKeyboardShortcuts()
 </script>

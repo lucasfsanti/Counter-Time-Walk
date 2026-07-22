@@ -1,5 +1,16 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { effectScope } from 'vue'
+
+const soundMock = vi.hoisted(() => ({
+  isMuted: { value: false },
+  toggleMute: vi.fn(),
+  playAlarm: vi.fn(),
+}))
+
+vi.mock('../../app/composables/useSound', () => ({
+  useSound: () => soundMock,
+}))
+
 import { useTimer } from '../../app/composables/useTimer'
 import { _resetForTesting } from '../../app/composables/useTimerList'
 
@@ -9,6 +20,7 @@ describe('useTimer', () => {
 
   beforeEach(() => {
     _resetForTesting()
+    soundMock.playAlarm.mockClear()
     vi.useFakeTimers()
     scope = effectScope()
     scope.run(() => {
@@ -66,6 +78,49 @@ describe('useTimer', () => {
     vi.advanceTimersByTime(3000 * 1000)
     expect(timer.currentTime.value).toBe(0)
     expect(timer.interval.value).toBeNull()
+  })
+
+  it('plays the alarm and flags isAlarming when currentTime reaches 0', () => {
+    expect(timer.isAlarming.value).toBe(false)
+    timer.startTimer()
+    vi.advanceTimersByTime(3000 * 1000)
+    expect(timer.isAlarming.value).toBe(true)
+    expect(soundMock.playAlarm).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not replay the alarm while currentTime stays at or below 0', () => {
+    timer.startTimer()
+    vi.advanceTimersByTime(3000 * 1000)
+    expect(soundMock.playAlarm).toHaveBeenCalledTimes(1)
+    timer.currentTime.value -= 30
+    expect(soundMock.playAlarm).toHaveBeenCalledTimes(1)
+  })
+
+  it('startTimer dismisses an active alarm', () => {
+    timer.startTimer()
+    vi.advanceTimersByTime(3000 * 1000)
+    expect(timer.isAlarming.value).toBe(true)
+
+    timer.startTimer()
+    expect(timer.isAlarming.value).toBe(false)
+  })
+
+  it('resetTimer dismisses an active alarm', () => {
+    timer.startTimer()
+    vi.advanceTimersByTime(3000 * 1000)
+    expect(timer.isAlarming.value).toBe(true)
+
+    timer.resetTimer()
+    expect(timer.isAlarming.value).toBe(false)
+  })
+
+  it('setting currentTime back above 0 dismisses an active alarm', () => {
+    timer.startTimer()
+    vi.advanceTimersByTime(3000 * 1000)
+    expect(timer.isAlarming.value).toBe(true)
+
+    timer.currentTime.value += 30
+    expect(timer.isAlarming.value).toBe(false)
   })
 
   it('minutes and seconds are correctly zero-padded strings', () => {
