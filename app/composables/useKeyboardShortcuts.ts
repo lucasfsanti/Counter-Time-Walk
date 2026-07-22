@@ -6,9 +6,11 @@ import { usePiP } from './usePiP'
 
 const TIME_STEP = 30
 
+const DIGIT_KEY = /^Digit([1-9])$/
+
 export function useKeyboardShortcuts() {
-  const { addTimer } = useTimerList()
-  const { activeTimerId, selectNext, selectPrevious } = useTimerSelection()
+  const { addTimer, timers } = useTimerList()
+  const { activeTimerId, setActiveTimer, selectNext, selectPrevious } = useTimerSelection()
   const { isSupported, isOpen, openPiP, closePiP } = usePiP()
 
   function handleKeydown(event: KeyboardEvent) {
@@ -16,6 +18,13 @@ export function useKeyboardShortcuts() {
 
     const target = event.target as HTMLElement | null
     if (target && ['INPUT', 'TEXTAREA'].includes(target.tagName)) return
+
+    const digitMatch = event.code.match(DIGIT_KEY)
+    if (digitMatch) {
+      const timer = timers.value[Number(digitMatch[1]) - 1]
+      if (timer) setActiveTimer(timer.timerId)
+      return
+    }
 
     switch (event.code) {
       case 'Space': {

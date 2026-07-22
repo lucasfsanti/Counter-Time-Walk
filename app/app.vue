@@ -43,6 +43,10 @@
                 <dd class="text-neutral-400">selecionar timer anterior/próximo</dd>
               </div>
               <div class="flex items-center justify-between gap-4">
+                <dt><kbd>1</kbd>-<kbd>9</kbd></dt>
+                <dd class="text-neutral-400">selecionar o timer com esse número</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
                 <dt><kbd>n</kbd></dt>
                 <dd class="text-neutral-400">adicionar timer</dd>
               </div>
@@ -51,7 +55,7 @@
                 <dd class="text-neutral-400">abrir/fechar picture-in-picture</dd>
               </div>
             </dl>
-            <p class="text-xs text-neutral-500 mt-4">Passe o mouse sobre um timer para selecioná-lo.</p>
+            <p class="text-xs text-neutral-500 mt-4">Passe o mouse sobre um timer, ou use as setas/números, para selecioná-lo.</p>
           </template>
         </UModal>
 

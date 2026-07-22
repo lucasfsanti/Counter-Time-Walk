@@ -84,6 +84,22 @@ describe('useKeyboardShortcuts', () => {
     expect(selection.activeTimerId.value).toBe(0)
   })
 
+  it('Digit1-9 select the timer at that 1-based position', () => {
+    scope.run(() => {
+      list.addTimer()
+      list.addTimer()
+    })
+    handleKeydown(keydown('Digit3'))
+    expect(selection.activeTimerId.value).toBe(2)
+    handleKeydown(keydown('Digit1'))
+    expect(selection.activeTimerId.value).toBe(0)
+  })
+
+  it('a digit key beyond the number of timers is a no-op', () => {
+    handleKeydown(keydown('Digit9'))
+    expect(selection.activeTimerId.value).toBe(0)
+  })
+
   it('KeyN adds a new timer', () => {
     handleKeydown(keydown('KeyN'))
     expect(list.timers.value).toHaveLength(2)
