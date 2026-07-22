@@ -12,7 +12,7 @@
 
         <UTooltip arrow :text="isSupported ? (isOpen ? 'Fechar picture-in-picture' : 'Picture-in-picture') : 'Requer Chrome ou Edge 116+'">
           <UButton
-            icon="material-symbols:picture-in-picture-2"
+            icon="ic:round-picture-in-picture-alt"
             variant="solid"
             :disabled="!isSupported"
             @click="isOpen ? closePiP() : openPiP()"
