@@ -1,11 +1,16 @@
-import { shallowRef, computed, createApp } from 'vue'
+import { shallowRef, computed, createApp, ref, onMounted, getCurrentInstance } from 'vue'
 import PiPView from '../components/PiPView.vue'
 
 const pipWindow = shallowRef<Window | null>(null)
 const isOpen = computed(() => pipWindow.value !== null)
 
 export function usePiP() {
-  const isSupported = computed(() => typeof window !== 'undefined' && 'documentPictureInPicture' in window)
+  const isSupported = ref(false)
+  if (getCurrentInstance()) {
+    onMounted(() => { isSupported.value = 'documentPictureInPicture' in window })
+  } else if (typeof window !== 'undefined') {
+    isSupported.value = 'documentPictureInPicture' in window
+  }
 
   async function openPiP() {
     const pip = await (window as any).documentPictureInPicture.requestWindow({
