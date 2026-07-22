@@ -4,6 +4,7 @@ import { useTimerSelection } from './useTimerSelection'
 import { useTimer } from './useTimer'
 import { usePiP } from './usePiP'
 import { useSound } from './useSound'
+import { useTimerNameEdit } from './useTimerNameEdit'
 
 const TIME_STEP = 30
 
@@ -14,6 +15,7 @@ export function useKeyboardShortcuts() {
   const { activeTimerId, setActiveTimer, selectNext, selectPrevious } = useTimerSelection()
   const { isSupported, isOpen, openPiP, closePiP } = usePiP()
   const { toggleMute } = useSound()
+  const { startEditingName } = useTimerNameEdit()
 
   function handleKeydown(event: KeyboardEvent) {
     if (event.ctrlKey || event.metaKey || event.altKey) return
@@ -64,6 +66,10 @@ export function useKeyboardShortcuts() {
         break
       case 'KeyN':
         addTimer()
+        break
+      case 'KeyE':
+        if (activeTimerId.value === null) break
+        startEditingName(activeTimerId.value)
         break
       case 'KeyP':
         if (isSupported.value) {

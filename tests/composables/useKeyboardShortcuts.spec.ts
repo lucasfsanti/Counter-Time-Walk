@@ -27,6 +27,7 @@ import { useKeyboardShortcuts } from '../../app/composables/useKeyboardShortcuts
 import { useTimerList, _resetForTesting } from '../../app/composables/useTimerList'
 import { useTimerSelection, _resetTimerSelectionForTesting } from '../../app/composables/useTimerSelection'
 import { useTimer } from '../../app/composables/useTimer'
+import { useTimerNameEdit, _resetTimerNameEditForTesting } from '../../app/composables/useTimerNameEdit'
 
 function keydown(code: string, opts: Partial<KeyboardEventInit> = {}) {
   return new KeyboardEvent('keydown', { code, cancelable: true, ...opts })
@@ -41,6 +42,7 @@ describe('useKeyboardShortcuts', () => {
   beforeEach(() => {
     _resetForTesting()
     _resetTimerSelectionForTesting()
+    _resetTimerNameEditForTesting()
     pipMock.isSupported.value = true
     pipMock.isOpen.value = false
     pipMock.openPiP.mockClear()
@@ -114,6 +116,19 @@ describe('useKeyboardShortcuts', () => {
   it('KeyN adds a new timer', () => {
     handleKeydown(keydown('KeyN'))
     expect(list.timers.value).toHaveLength(2)
+  })
+
+  it('KeyE starts editing the active timer name', () => {
+    const { editingTimerId } = useTimerNameEdit()
+    handleKeydown(keydown('KeyE'))
+    expect(editingTimerId.value).toBe(0)
+  })
+
+  it('KeyE no-ops when there is no active timer', () => {
+    scope.run(() => list.removeTimer(0))
+    const { editingTimerId } = useTimerNameEdit()
+    handleKeydown(keydown('KeyE'))
+    expect(editingTimerId.value).toBeNull()
   })
 
   it('KeyP opens PiP when supported and closed, closes it when open', () => {

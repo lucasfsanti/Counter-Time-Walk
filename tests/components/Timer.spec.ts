@@ -4,6 +4,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import Timer from '../../app/components/Timer.vue'
 import { useTimerList, _resetForTesting } from '../../app/composables/useTimerList'
 import { useTimerSelection, _resetTimerSelectionForTesting } from '../../app/composables/useTimerSelection'
+import { useTimerNameEdit, _resetTimerNameEditForTesting } from '../../app/composables/useTimerNameEdit'
 import { nuxtUiStubs } from '../support/nuxtUiStubs'
 
 describe('Timer.vue', () => {
@@ -23,6 +24,7 @@ describe('Timer.vue', () => {
   beforeEach(() => {
     _resetForTesting()
     _resetTimerSelectionForTesting()
+    _resetTimerNameEditForTesting()
     list = useTimerList()
     selection = useTimerSelection()
     wrappers = []
@@ -106,5 +108,64 @@ describe('Timer.vue', () => {
   it('hides the delete button when showDelete is false', () => {
     const wrapper = mountTimer(0, { showDelete: false })
     expect(wrapper.find('[aria-label="Delete timer"]').exists()).toBe(false)
+  })
+
+  it('hides the name label when there is only one timer and no custom name', () => {
+    const wrapper = mountTimer(0)
+    expect(wrapper.find('.timer-name-label').exists()).toBe(false)
+  })
+
+  it('shows the 1-based position as the default name once a second timer exists', () => {
+    list.addTimer()
+    const wrapper = mountTimer(0)
+    expect(wrapper.find('.timer-name-label').text()).toBe('1')
+  })
+
+  it('shows a custom name even when there is only one timer', () => {
+    list.timers.value[0].name = 'Focus'
+    const wrapper = mountTimer(0)
+    expect(wrapper.find('.timer-name-label').text()).toBe('Focus')
+  })
+
+  it('clicking the name label selects this timer and opens the name input', async () => {
+    list.addTimer()
+    selection.setActiveTimer(1)
+    const wrapper = mountTimer(0)
+
+    await wrapper.find('.timer-name-label').trigger('click')
+    expect(selection.activeTimerId.value).toBe(0)
+    expect(wrapper.find('.timer-name-input').exists()).toBe(true)
+  })
+
+  it('typing in the name input updates the timer name', async () => {
+    list.addTimer()
+    const wrapper = mountTimer(0)
+    await wrapper.find('.timer-name-label').trigger('click')
+
+    const input = wrapper.find('.timer-name-input')
+    await input.setValue('Deep Work')
+    expect(list.timers.value[0].name).toBe('Deep Work')
+  })
+
+  it('pressing Enter in the name input closes the editor', async () => {
+    list.addTimer()
+    const wrapper = mountTimer(0)
+    await wrapper.find('.timer-name-label').trigger('click')
+
+    await wrapper.find('.timer-name-input').trigger('keydown.enter')
+    expect(wrapper.find('.timer-name-input').exists()).toBe(false)
+    expect(wrapper.find('.timer-name-label').exists()).toBe(true)
+  })
+
+  it('the KeyE shortcut opens the name editor for the active timer', async () => {
+    list.addTimer()
+    selection.setActiveTimer(0)
+    const wrapper = mountTimer(0)
+
+    const { startEditingName } = useTimerNameEdit()
+    startEditingName(0)
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('.timer-name-input').exists()).toBe(true)
   })
 })

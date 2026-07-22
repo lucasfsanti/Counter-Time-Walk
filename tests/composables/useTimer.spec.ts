@@ -142,4 +142,10 @@ describe('useTimer', () => {
     expect(timer.minutes.value).toBe('49')
     expect(timer.seconds.value).toBe('00')
   })
+
+  it('name defaults to an empty string and can be updated', () => {
+    expect(timer.name.value).toBe('')
+    timer.name.value = 'Pomodoro'
+    expect(timer.name.value).toBe('Pomodoro')
+  })
 })

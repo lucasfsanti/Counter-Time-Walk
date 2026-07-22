@@ -15,12 +15,13 @@ interface TimerEntry {
   currentTime: number
   interval: ReturnType<typeof setInterval> | null
   isAlarming: boolean
+  name: string
 }
 
 let nextId = 1
 
 const timers = ref<TimerEntry[]>([
-  { timerId: 0, palette: getColorPalette(0), currentTime: DEFAULT_DURATION, interval: null, isAlarming: false },
+  { timerId: 0, palette: getColorPalette(0), currentTime: DEFAULT_DURATION, interval: null, isAlarming: false, name: '' },
 ])
 
 export function useTimerList() {
@@ -31,6 +32,7 @@ export function useTimerList() {
       currentTime: DEFAULT_DURATION,
       interval: null,
       isAlarming: false,
+      name: '',
     })
     nextId++
   }
@@ -49,6 +51,6 @@ export function useTimerList() {
 }
 
 export function _resetForTesting() {
-  timers.value = [{ timerId: 0, palette: getColorPalette(0), currentTime: DEFAULT_DURATION, interval: null, isAlarming: false }]
+  timers.value = [{ timerId: 0, palette: getColorPalette(0), currentTime: DEFAULT_DURATION, interval: null, isAlarming: false, name: '' }]
   nextId = 1
 }

@@ -64,6 +64,10 @@
                 <dd class="text-neutral-400">adicionar timer</dd>
               </div>
               <div class="flex items-center justify-between gap-4">
+                <dt><kbd>e</kbd></dt>
+                <dd class="text-neutral-400">editar nome do timer selecionado</dd>
+              </div>
+              <div class="flex items-center justify-between gap-4">
                 <dt><kbd>p</kbd></dt>
                 <dd class="text-neutral-400">abrir/fechar picture-in-picture</dd>
               </div>

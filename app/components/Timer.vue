@@ -5,6 +5,30 @@
       :class="['relative', { 'timer-card--active': isActive, 'timer-card--alarming': isAlarming }]"
       @mouseenter="setActiveTimer(props.timerId)"
     >
+      <div v-if="showName" class="timer-name-row">
+        <input
+          v-if="isEditingName"
+          ref="nameInputRef"
+          v-model="name"
+          class="timer-name-input"
+          :style="accentStyle"
+          type="text"
+          maxlength="24"
+          placeholder="Nome do timer"
+          aria-label="Nome do timer"
+          @keydown.enter="stopEditingName()"
+          @keydown.escape="stopEditingName()"
+          @blur="stopEditingName()"
+        />
+        <button
+          v-else
+          type="button"
+          class="timer-name-label"
+          :style="accentStyle"
+          aria-label="Editar nome do timer"
+          @click="beginEditName()"
+        >{{ displayName }}</button>
+      </div>
       <h1 class="timer-display">{{minutes}}:{{seconds}}</h1>
       <div class="flex gap-2 flex-wrap justify-center">
         <UButton @click="startTimer()" icon="ic:round-play-arrow" size="xl" :disabled="interval != null" aria-label="Start timer" />
@@ -35,12 +59,33 @@ const props = withDefaults(defineProps<{
   showDelete: true,
 })
 
-const { currentTime, minutes, seconds, interval, isAlarming, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
+const { currentTime, minutes, seconds, interval, isAlarming, name, startTimer, stopTimer, resetTimer } = useTimer(props.timerId)
 
-const { removeTimer } = useTimerList()
+const { removeTimer, timers } = useTimerList()
 
 const { activeTimerId, setActiveTimer } = useTimerSelection()
 const isActive = computed(() => activeTimerId.value === props.timerId)
+
+const { editingTimerId, startEditingName, stopEditingName } = useTimerNameEdit()
+const isEditingName = computed(() => editingTimerId.value === props.timerId)
+
+const position = computed(() => timers.value.findIndex(t => t.timerId === props.timerId) + 1)
+const displayName = computed(() => name.value.trim() || String(position.value))
+const showName = computed(() => timers.value.length > 1 || name.value.trim().length > 0)
+
+const nameInputRef = ref<HTMLInputElement | null>(null)
+
+watch(isEditingName, async (editing) => {
+  if (!editing) return
+  await nextTick()
+  nameInputRef.value?.focus()
+  nameInputRef.value?.select()
+})
+
+function beginEditName() {
+  setActiveTimer(props.timerId)
+  startEditingName(props.timerId)
+}
 
 const paletteStyle = computed(() => ({
   '--ui-border': props.palette.border,
@@ -74,6 +119,41 @@ function deleteTimer() {
     line-height: initial;
     text-shadow: 0 0 16px color-mix(in srgb, currentColor 50%, transparent), 0 0 32px color-mix(in srgb, currentColor 20%, transparent);
     /* height: 15vw; */
+  }
+
+  .timer-name-row {
+    display: flex;
+    justify-content: center;
+  }
+
+  .timer-name-label,
+  .timer-name-input {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    max-width: 100%;
+    text-shadow: 0 0 12px color-mix(in srgb, currentColor 50%, transparent);
+  }
+
+  .timer-name-label {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: text;
+  }
+
+  .timer-name-label:hover,
+  .timer-name-label:focus-visible {
+    opacity: 0.8;
+  }
+
+  .timer-name-input {
+    background: none;
+    border: none;
+    border-bottom: 2px dashed currentColor;
+    outline: none;
+    width: 100%;
   }
 
   .timer-card--active {

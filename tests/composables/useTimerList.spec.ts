@@ -18,6 +18,7 @@ describe('useTimerList', () => {
     expect(list.timers.value[0].palette).toEqual(colorPalettes[0])
     expect(list.timers.value[0].currentTime).toBe(DEFAULT_DURATION)
     expect(list.timers.value[0].interval).toBeNull()
+    expect(list.timers.value[0].name).toBe('')
   })
 
   it('addTimer appends a new entry with an incrementing timerId and default runtime state', () => {
@@ -27,6 +28,7 @@ describe('useTimerList', () => {
     expect(list.timers.value[1].palette).toEqual(colorPalettes[1])
     expect(list.timers.value[1].currentTime).toBe(DEFAULT_DURATION)
     expect(list.timers.value[1].interval).toBeNull()
+    expect(list.timers.value[1].name).toBe('')
   })
 
   it('addTimer cycles palette back to index 0 after 6 entries', () => {

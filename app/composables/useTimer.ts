@@ -31,6 +31,13 @@ export function useTimer(timerId: number) {
   const interval = computed(() => entry.value.interval)
   const isAlarming = computed(() => entry.value.isAlarming)
 
+  const name = computed({
+    get: () => entry.value.name,
+    set: (v: string) => {
+      entry.value.name = v
+    },
+  })
+
   watch(() => entry.value?.currentTime, (value) => {
     if (value === undefined || value > 0) return
     stopTimer()
@@ -61,5 +68,5 @@ export function useTimer(timerId: number) {
     entry.value.isAlarming = false
   }
 
-  return { currentTime, minutes, seconds, interval, isAlarming, startTimer, stopTimer, resetTimer }
+  return { currentTime, minutes, seconds, interval, isAlarming, name, startTimer, stopTimer, resetTimer }
 }
