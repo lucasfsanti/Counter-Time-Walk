@@ -36,12 +36,12 @@
         <UButton @click="resetTimer()" icon="ic:round-replay" size="xl" aria-label="Reset timer" />
         <UButton v-if="showDelete" @click="deleteTimer()" icon="ic:round-delete" aria-label="Delete timer" />
       </div>
-      <div class="flex gap-2 mt-4 flex-wrap justify-center">
+      <div class="timer-adjustments flex gap-2 mt-4 flex-wrap justify-center">
         <UButton @click="currentTime += 30" label="30 s" icon="ic:round-add" color="secondary" :style="accentStyle" />
         <UButton @click="currentTime += 60" label="1 min" icon="ic:round-add" color="secondary" :style="accentStyle" />
         <UButton @click="currentTime += 5 * 60" label="5 min" icon="ic:round-add" color="secondary" :style="accentStyle" />
       </div>
-      <div class="flex gap-2 mt-2 flex-wrap justify-center">
+      <div class="timer-adjustments flex gap-2 mt-2 flex-wrap justify-center">
         <UButton @click="currentTime -= 30" label="30s" icon="ic:round-minus" color="secondary" :style="accentStyle" />
         <UButton @click="currentTime -= 60" label="1 min" icon="ic:round-minus" color="secondary" :style="accentStyle" />
         <UButton @click="currentTime -= 5 * 60" label="5 min" icon="ic:round-minus" color="secondary" :style="accentStyle" />
